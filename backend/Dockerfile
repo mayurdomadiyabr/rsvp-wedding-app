@@ -16,15 +16,6 @@ COPY . .
 
 RUN mkdir -p /app/media /app/exports /app/staticfiles
 
-# Entrypoint: migrate, seed admin, then start gunicorn
-COPY <<EOF /app/entrypoint.sh
-#!/bin/bash
-set -e
-python manage.py migrate --noinput
-python manage.py collectstatic --noinput
-python manage.py seed_admin
-exec gunicorn config.wsgi:application --bind 0.0.0.0:\${PORT:-8000} --workers 2
-EOF
 RUN chmod +x /app/entrypoint.sh
 
 EXPOSE 8000
