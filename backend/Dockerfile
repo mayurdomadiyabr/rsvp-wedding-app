@@ -16,8 +16,16 @@ COPY . .
 
 RUN mkdir -p /app/media /app/exports /app/staticfiles
 
-# Create entrypoint script that runs migrations before starting
-RUN printf '#!/bin/bash\nset -e\npython manage.py migrate --noinput\npython manage.py collectstatic --noinput\npython manage.py shell -c "\nfrom django.contrib.auth.models import User\nif not User.objects.filter(username=\x27admin\x27).exists():\n    User.objects.create_superuser(\x27admin\x27, \x27admin@rsvpwedding.app\x27, \x27admin123\x27)\n" 2>/dev/null || true\nexec gunicorn config.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 2\n' > /app/entrypoint.sh && chmod +x /app/entrypoint.sh
+# Entrypoint: migrate, seed admin, then start gunicorn
+COPY <<EOF /app/entrypoint.sh
+#!/bin/bash
+set -e
+python manage.py migrate --noinput
+python manage.py collectstatic --noinput
+python manage.py seed_admin
+exec gunicorn config.wsgi:application --bind 0.0.0.0:\${PORT:-8000} --workers 2
+EOF
+RUN chmod +x /app/entrypoint.sh
 
 EXPOSE 8000
 
