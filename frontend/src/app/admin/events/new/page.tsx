@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
-import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -77,19 +76,16 @@ export default function CreateEventPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b">
-        <div className="max-w-2xl mx-auto px-4 py-4 flex items-center gap-3">
-          <Link href="/admin/dashboard">
-            <Button variant="ghost" size="icon">
-              <ArrowLeft className="w-4 h-4" />
-            </Button>
-          </Link>
-          <h1 className="text-xl font-bold">Create Event</h1>
-        </div>
-      </header>
-
-      <main className="max-w-2xl mx-auto px-4 py-8">
+    <div className="p-6 lg:p-8 max-w-2xl">
+      {/* Breadcrumb */}
+      <div className="flex items-center gap-2 text-sm text-gray-500 mb-1">
+        <Link href="/admin/dashboard" className="hover:text-gray-700">Home</Link>
+        <span>/</span>
+        <Link href="/admin/dashboard" className="hover:text-gray-700">Events</Link>
+        <span>/</span>
+        <span className="text-gray-900 font-medium">Create</span>
+      </div>
+      <h1 className="text-2xl font-bold text-gray-900 mb-6">Create Event</h1>
         <Card>
           <CardHeader>
             <CardTitle>Event Details</CardTitle>
@@ -173,7 +169,6 @@ export default function CreateEventPage() {
             </form>
           </CardContent>
         </Card>
-      </main>
     </div>
   );
 }

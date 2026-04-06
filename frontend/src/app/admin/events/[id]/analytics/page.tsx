@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import {
   PieChart,
   Pie,
@@ -18,7 +17,6 @@ import {
   type PieLabelRenderProps,
 } from "recharts";
 
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAppSelector } from "@/store";
 import { useGetAnalyticsQuery, useGetEventQuery } from "@/store/api";
@@ -54,21 +52,18 @@ export default function AnalyticsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center gap-3">
-          <Link href={`/admin/events/${eventId}`}>
-            <Button variant="ghost" size="icon">
-              <ArrowLeft className="w-4 h-4" />
-            </Button>
-          </Link>
-          <h1 className="text-xl font-bold">
-            Analytics — {event?.title || "Event"}
-          </h1>
-        </div>
-      </header>
-
-      <main className="max-w-6xl mx-auto px-4 py-8">
+    <div className="p-6 lg:p-8">
+      {/* Breadcrumb */}
+      <div className="flex items-center gap-2 text-sm text-gray-500 mb-1">
+        <Link href="/admin/dashboard" className="hover:text-gray-700">Home</Link>
+        <span>/</span>
+        <Link href={`/admin/events/${eventId}`} className="hover:text-gray-700">Event</Link>
+        <span>/</span>
+        <span className="text-gray-900 font-medium">Analytics</span>
+      </div>
+      <h1 className="text-2xl font-bold text-gray-900 mb-6">
+        Analytics — {event?.title || "Event"}
+      </h1>
         {isLoading && <p className="text-muted-foreground">Loading…</p>}
 
         {/* Summary cards */}
@@ -151,7 +146,6 @@ export default function AnalyticsPage() {
             </CardContent>
           </Card>
         </div>
-      </main>
     </div>
   );
 }

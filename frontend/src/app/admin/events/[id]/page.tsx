@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, BarChart3, Copy, Download, Search } from "lucide-react";
+import { BarChart3, Copy, Download, Search } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -116,39 +116,37 @@ export default function EventDetailPage() {
   const totalPages = guestData ? Math.ceil(guestData.count / 20) : 1;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Link href="/admin/dashboard">
-              <Button variant="ghost" size="icon">
-                <ArrowLeft className="w-4 h-4" />
-              </Button>
-            </Link>
-            <div>
-              <h1 className="text-xl font-bold">{event.title}</h1>
-              <p className="text-sm text-muted-foreground">
-                {event.accepted_count}
-                {event.max_capacity && ` / ${event.max_capacity}`} guests confirmed
-              </p>
-            </div>
-          </div>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm" onClick={copyShareLink}>
-              <Copy className="w-4 h-4 mr-1" />
-              Share RSVP Link
-            </Button>
-            <Link href={`/admin/events/${eventId}/analytics`}>
-              <Button variant="outline" size="sm">
-                <BarChart3 className="w-4 h-4 mr-1" />
-                Analytics
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </header>
+    <div className="p-6 lg:p-8">
+      {/* Breadcrumb */}
+      <div className="flex items-center gap-2 text-sm text-gray-500 mb-1">
+        <Link href="/admin/dashboard" className="hover:text-gray-700">Home</Link>
+        <span>/</span>
+        <Link href="/admin/dashboard" className="hover:text-gray-700">Events</Link>
+        <span>/</span>
+        <span className="text-gray-900 font-medium">{event.title}</span>
+      </div>
 
-      <main className="max-w-6xl mx-auto px-4 py-8">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-3">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">{event.title}</h1>
+          <p className="text-sm text-gray-500">
+            {event.accepted_count}
+            {event.max_capacity && ` / ${event.max_capacity}`} guests confirmed
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <Button variant="outline" size="sm" onClick={copyShareLink}>
+            <Copy className="w-4 h-4 mr-1" />
+            Share RSVP Link
+          </Button>
+          <Link href={`/admin/events/${eventId}/analytics`}>
+            <Button variant="outline" size="sm">
+              <BarChart3 className="w-4 h-4 mr-1" />
+              Analytics
+            </Button>
+          </Link>
+        </div>
+      </div>
         <Card>
           <CardHeader>
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
@@ -284,7 +282,6 @@ export default function EventDetailPage() {
             )}
           </CardContent>
         </Card>
-      </main>
     </div>
   );
 }
